@@ -5,7 +5,7 @@ CFLAGS = -std=c11 -Wall -Wextra -pthread
 
 all: minios
 
-minios: src/main.c
+minios: src/main.c src/sched/process.h
 	$(CC) $(CFLAGS) src/main.c -o minios
 
 clean:

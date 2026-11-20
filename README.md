@@ -4,7 +4,9 @@ An operating system simulator written in C for an individual course project.
 
 ## Current progress
 
-The initial program builds and prints its name. Scheduling algorithms are not implemented yet.
+The program defines an initial process structure and prints one example process.
+This example will be replaced with file input. Scheduling algorithms are not
+implemented yet.
 
 ## Build and run
 
