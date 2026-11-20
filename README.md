@@ -4,7 +4,8 @@ An operating system simulator written in C for an individual course project.
 
 ## Current progress
 
-The program defines an initial process structure and prints one example process.
+The program defines an initial process structure with CPU/I/O bursts and prints
+one example process.
 This example will be replaced with file input. Scheduling algorithms are not
 implemented yet.
 
