@@ -4,10 +4,10 @@ An operating system simulator written in C for an individual course project.
 
 ## Current progress
 
-The program defines an initial process structure with CPU/I/O bursts and prints
-one example process.
-This example will be replaced with file input. Scheduling algorithms are not
-implemented yet.
+The input module loads processes and their CPU/I/O bursts into a dynamically
+allocated list. It rejects invalid numbers, duplicate process IDs, and missing
+or invalid burst sequences. The current main program displays the records from
+`tests/sched_io.txt`; command-line selection and scheduling are not implemented yet.
 
 ## Build and run
 
