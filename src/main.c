@@ -9,11 +9,15 @@ int main(void)
         return 1;
     }
 
-    int character;
+    char line[1024];
 
-    while ((character = fgetc(file)) != EOF) {
-        putchar(character);
+while (fgets(line, sizeof(line), file) != NULL) {
+    if (line[0] == '#' || line[0] == '\n') {
+        continue;
     }
+
+    printf("%s", line);
+}
 
     fclose(file);
     return 0;
