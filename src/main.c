@@ -1,12 +1,21 @@
 #include <stdio.h>
 #include "sched/input.h"
+#include <string.h>
 
-int main(void)
+int main(int argc, char *argv[])
 {
+    if (argc != 5 ||
+        strcmp(argv[1], "sched") != 0 ||
+        strcmp(argv[2], "-a") != 0 ||
+        strcmp(argv[3], "fcfs") != 0) {
+        fprintf(stderr, "error: usage: ./minios sched -a fcfs FILE\n");
+        return 1;
+    }
+
     Process *processes = NULL;
     size_t count = 0;
 
-    if (read_process_file("tests/sched_io.txt", &processes, &count) != 0) {
+    if (read_process_file(argv[4], &processes, &count) != 0) {
         return 1;
     }
 
