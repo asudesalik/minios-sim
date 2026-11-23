@@ -23,6 +23,10 @@ typedef struct {
     int remaining;
     int io_complete;
     size_t ready_order;
+    int completion;
+    int waiting;
+    int first_dispatch;
+    int has_started;
 } Process;
 
 #endif

@@ -36,6 +36,7 @@ static int finish_cpu_burst(Process *process, int time)
 {
     if (process->current_burst + 1 == process->burst_count) {
         process->state = TERMINATED;
+        process->completion = time;
         return 1;
     }
 
@@ -72,8 +73,13 @@ int run_scheduler(Process *processes, size_t count,
             running = policy->pick_next(processes, count);
 
             if (running != count) {
-                processes[running].state = RUNNING;
-            }
+    processes[running].state = RUNNING;
+
+    if (!processes[running].has_started) {
+        processes[running].first_dispatch = time;
+        processes[running].has_started = 1;
+    }
+}
         }
 
         if (running == count) {
@@ -82,6 +88,11 @@ int run_scheduler(Process *processes, size_t count,
             printf("t=%d P%d\n", time, processes[running].pid);
             processes[running].remaining--;
         }
+        for (size_t i = 0; i < count; i++) {
+    if (processes[i].state == READY) {
+        processes[i].waiting++;
+    }
+}
 
         time++;
     }
