@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "sched/input.h"
 #include <string.h>
+#include "sched/policies.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
         printf("\n");
     }
 
-    free_processes(processes, count);
-    return 0;
+    int result = run_scheduler(processes, count, &FCFS_POLICY);
+free_processes(processes, count);
+return result;
 }

@@ -21,6 +21,8 @@ typedef struct {
     size_t burst_count;
     size_t current_burst;
     int remaining;
+    int io_complete;
+    size_t ready_order;
 } Process;
 
 #endif
