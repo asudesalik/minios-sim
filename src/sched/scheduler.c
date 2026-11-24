@@ -96,6 +96,20 @@ int run_scheduler(Process *processes, size_t count,
 
         time++;
     }
+        printf("\nPID Arrival Completion Turnaround Waiting Response\n");
+
+    for (size_t i = 0; i < count; i++) {
+        int turnaround = processes[i].completion - processes[i].arrival;
+        int response = processes[i].first_dispatch - processes[i].arrival;
+
+        printf("P%d %d %d %d %d %d\n",
+               processes[i].pid,
+               processes[i].arrival,
+               processes[i].completion,
+               turnaround,
+               processes[i].waiting,
+               response);
+    }
 
     return 0;
 }
