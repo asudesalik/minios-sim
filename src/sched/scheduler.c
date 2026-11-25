@@ -53,6 +53,9 @@ int run_scheduler(Process *processes, size_t count,
                   const SchedulerPolicy *policy)
 {
     int time = 0;
+    int busy_ticks = 0;
+    size_t last_process = count;
+    int context_switches = 0;
     size_t completed = 0;
     size_t running = count;
     size_t next_order = 0;
@@ -73,6 +76,11 @@ int run_scheduler(Process *processes, size_t count,
             running = policy->pick_next(processes, count);
 
             if (running != count) {
+                if (last_process != count && last_process != running) {
+    context_switches++;
+}
+
+last_process = running;
     processes[running].state = RUNNING;
 
     if (!processes[running].has_started) {
@@ -87,6 +95,7 @@ int run_scheduler(Process *processes, size_t count,
         } else {
             printf("t=%d P%d\n", time, processes[running].pid);
             processes[running].remaining--;
+            busy_ticks++;
         }
         for (size_t i = 0; i < count; i++) {
     if (processes[i].state == READY) {
@@ -96,11 +105,19 @@ int run_scheduler(Process *processes, size_t count,
 
         time++;
     }
-        printf("\nPID Arrival Completion Turnaround Waiting Response\n");
+            double total_turnaround = 0;
+    double total_waiting = 0;
+    double total_response = 0;
+    
+    printf("\nPID Arrival Completion Turnaround Waiting Response\n");
 
     for (size_t i = 0; i < count; i++) {
         int turnaround = processes[i].completion - processes[i].arrival;
         int response = processes[i].first_dispatch - processes[i].arrival;
+
+        total_turnaround += turnaround;
+        total_waiting += processes[i].waiting;
+        total_response += response;
 
         printf("P%d %d %d %d %d %d\n",
                processes[i].pid,
@@ -110,6 +127,14 @@ int run_scheduler(Process *processes, size_t count,
                processes[i].waiting,
                response);
     }
+    printf("\nAverage turnaround: %.2f\n", total_turnaround / count);
+    printf("Average waiting: %.2f\n", total_waiting / count);
+    printf("Average response: %.2f\n", total_response / count);
+        printf("CPU utilization: %.2f%%\n",
+           time > 0 ? 100.0 * busy_ticks / time : 0.0);
 
+    printf("Throughput: %.2f processes per 100 ticks\n",
+           time > 0 ? 100.0 * count / time : 0.0);
+    printf("Context switches: %d\n", context_switches);
     return 0;
 }
